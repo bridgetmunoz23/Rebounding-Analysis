@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebounding & Turnovers: Single-Game Breakdown</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #14181f;
+    --muted: #5b6470;
+    --rule: #e6e6e6;
+    --bg: #f7f7f5;
+    --card: #ffffff;
+    --accent: #3a6b46;
+    --accent-soft: #e8efe9;
+    --navy: #1f2a3a;
+    --good: #2f7a4a;
+    --warn: #b06b00;
+    --bad: #b23a3a;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 28px 96px;
+  }
+
+  /* ---------- Header ---------- */
+  header.title {
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  header.title h1 {
+    margin: 0 0 10px;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+  header.title .sub {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 640px;
+  }
+  .byline {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .byline b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Lede ---------- */
+  .lede {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px 20px 24px;
+    margin: 0 0 36px;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .lede .title {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .lede ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .lede li {
+    margin: 8px 0;
+    line-height: 1.5;
+  }
+  .lede li::marker { color: var(--accent); }
+  .lede b { color: var(--navy); }
+
+  /* ---------- Sections ---------- */
+  h2 {
+    color: var(--navy);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin: 44px 0 4px;
+    font-weight: 700;
+  }
+  h2 + .section-title {
+    margin: 0 0 18px;
+    font-size: 26px;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-size: 15px;
+    margin: 22px 0 10px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  p { margin: 8px 0; }
+
+  /* ---------- KPI cards ---------- */
+  .kpis {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    margin: 16px 0 22px;
+  }
+  .kpi {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+  .kpi .label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .kpi .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .kpi .sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ---------- Callouts ---------- */
+  .insight {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 14px 0 18px;
+    font-size: 15.5px;
+  }
+  .insight .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .insight p { margin: 0; }
+  .insight b { color: var(--navy); }
+
+  /* ---------- Tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 20px;
+    font-size: 14.5px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 11px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+  }
+  th {
+    background: #fafaf8;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; }
+  th.num { text-align: right; }
+  td.verdict { font-size: 13px; }
+  tr.total td { font-weight: 600; background: #fafaf8; }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .pill.good { background: #e7f1eb; color: var(--good); }
+  .pill.warn { background: #fbf0dc; color: var(--warn); }
+  .pill.bad  { background: #f5e2e2; color: var(--bad); }
+
+  /* ---------- Bar list (DREB share) ---------- */
+  .barlist { margin: 8px 0 4px; }
+  .barlist .row {
+    display: grid;
+    grid-template-columns: 60px 1fr 60px;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 14px;
+  }
+  .barlist .who { font-weight: 600; color: var(--ink); }
+  .barlist .bar {
+    height: 10px;
+    background: #e6ece7;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .barlist .bar .fill {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 6px;
+  }
+  .barlist .pct {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    text-align: right;
+    font-size: 13px;
+  }
+
+  ul.clean { padding-left: 20px; margin: 8px 0; }
+  ul.clean li { margin: 6px 0; }
+
+  /* ---------- Comparison charts ---------- */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 18px 0 22px;
+  }
+  @media (max-width: 720px) {
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 18px 18px 14px;
+  }
+  .chart-card .chart-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .chart-card .chart-title {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .chart-card .chart-wrap {
+    position: relative;
+    height: 220px;
+  }
+
+  /* ---------- Glossary / footer ---------- */
+  .glossary {
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+  }
+  .glossary b { color: var(--ink); font-weight: 600; }
+
+  footer.foot {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============= HEADER ============= -->
+  <header class="title">
+    <div class="eyebrow"> Work Sample</div>
+    <h1>The Value of Every Loose Ball </h1>
+    <p class="sub">
+            A possession-by-possession investigation into how GW's crash decisions and turnovers impacted the final score against Georgetown. This is measured by an "opportunity cost" of missing a rebound or turnover, or points Georgetown scores on the immediate possession when GW fails to gain or keep possession.
+
+    </p>
+    <div class="byline">
+      <span>Bridget Muñoz · George Washington University Men's Basketball</span>  ·
+      <span><b>Sample:</b> George Washington versus Georgetown scrimmage (73–64 loss) against 24-25 nonconference data</span>
+      
+    </div>
+  </header>
+
+  <!-- ============= LEDE ============= -->
+  <div class="lede">
+    <div class="title">Key findings</div>
+    <ul>
+      <li>With three offensive crashers, GW converted <b>80%</b> of misses into rebounds at <b>1.25 PPP</b>, however, the most efficient look was also the rarest (5 FREQ). </li>
+      <li>GW's most frequent number of rebounders (2 crashers) resulted in <b>1.29 opponent PPP</b> when it failed.</li>
+      <li>Cost of turnovers dropped almost to zero after halftime (<b>1.375 → 0.125 pts/TO</b>) despite similar frequency (7 in H1 vs 8 in H2).</li>
+    </ul>
+  </div>
+
+  <!-- ============= TOP-LINE ============= -->
+  <h2>Quick stats</h2>
+  <div class="section-title">The cost of failed effort</div>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Pts off failed OREBs</div>
+      <div class="value">20</div>
+      <div class="sub">Total points scored by Georgetown on possessions after a missed GW OREB</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Pts off failed DREBs</div>
+      <div class="value">13</div>
+      <div class="sub">Second-chance points conceded to Georgetown</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Turnovers</div>
+      <div class="value">15</div>
+      <div class="sub">0.21 per possession · 0.75 pts/TO</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Combined cost</div>
+      <div class="value">44</div>
+      <div class="sub">Opponent points traceable to a failed rebound or turnover (20 from OREBs + 13 from DREBs + ~11 from TOs)</div>
+    </div>
+  </div>
+
+  <!-- ============= OREB ============= -->
+  <h2>Section 1</h2>
+  <div class="section-title">Offensive rebounding: 3 crasher efficiency</div>
+
+  <div class="insight">
+    <p>OREB% and points per possession are both highest when <b>3 players crash</b> (80% / 1.25). With <b>0 crashers</b>, Georgetown scored at <b>1.67 PPP</b>.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Crashers</th>
+        <th class="num">FREQ</th>
+        <th class="num">OREB%</th>
+        <th class="num">Off. PPP</th>
+        <th class="num">Opp. PPP</th>
+        <th>Read</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td class="num">6</td><td class="num">0%</td><td class="num">0.00</td><td class="num">1.67</td><td class="verdict"><span class="pill bad">Maximum inefficiency</span></td></tr>
+      <tr><td>1</td><td class="num">13</td><td class="num">31%</td><td class="num">1.25</td><td class="num">0.33</td><td class="verdict"><span class="pill warn">Balanced efficiency</span></td></tr>
+      <tr><td>2</td><td class="num">9</td><td class="num">22%</td><td class="num">0.50</td><td class="num">1.00</td><td class="verdict"><span class="pill warn">Diminishing efficiency</span></td></tr>
+      <tr><td>3</td><td class="num">5</td><td class="num">80%</td><td class="num">1.25</td><td class="num">0.00</td><td class="verdict"><span class="pill good">Optimal efficiency</span></td></tr>
+      <tr><td>4</td><td class="num">2</td><td class="num">0%</td><td class="num">0.00</td><td class="num">0.00</td><td class="verdict"><span class="pill warn">Small sample</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============= SEASON COMPARISON ============= -->
+  <h2>Section 2</h2>
+  <div class="section-title">Comparison to 24-25 season</div>
+
+  <div class="insight">
+    <p>The gap from last season widens at every level of effort. GW <b>sent 4 crashers twice</b> this game, compared to <b>zero</b> in the 24-25 non-conference average. This reflects a real improvement in rebounding effort.</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">3+ crashers / game</div>
+      <div class="value">5 <span style="font-size: 18px; color: var(--muted); font-weight: 600;">vs 1.8</span></div>
+      <div class="sub">Significant increase in high-effort crashing from previous season</div>
+    </div>
+    <div class="kpi">
+      <div class="label">24-25 (3 crashers)</div>
+      <div class="value">73% <span style="font-size: 18px; color: var(--muted); font-weight: 600;">/ 1.6 PPP</span></div>
+      <div class="sub">Confirms that the Georgetown-game pattern of 3 crasher efficiency holds across a full season</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-label">GW Efficiency</div>
+      <div class="chart-title">GW PPP by number of crashers: 24-25 season versus Georgetown scrimmage</div>
+      <div class="chart-wrap"><canvas id="chartOwnPPP"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">Cost of a failed crash</div>
+      <div class="chart-title">Opponent PPP by number of crashers: 24-25 season versus Georgetown scrimmage</div>
+      <div class="chart-wrap"><canvas id="chartOppPPP"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ============= DREB ============= -->
+  <h2>Section 3</h2>
+  <div class="section-title">Defensive rebounding inefficiency with 2 crashers </div>
+
+  <div class="insight">
+    <p>GW's most frequent defensive strategy, <b>2 crashers</b>, obtained the rebound only half the time and gave up <b>1.29 opp. PPP</b> on failures. Each added rebounder raised the success rate: <b>91% DREB%</b> with 3 crashers, <b>100%</b> with 4.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Crashers</th>
+        <th class="num">FREQ</th>
+        <th class="num">DREB%</th>
+        <th class="num">Opp. PPP</th>
+        <th>Read</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>2</td><td class="num">14</td><td class="num">50%</td><td class="num">1.29</td><td class="verdict"><span class="pill bad">Maximum inefficiency</span></td></tr>
+      <tr><td>3</td><td class="num">11</td><td class="num">91%</td><td class="num">n=1*</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
+      <tr><td>4</td><td class="num">6</td><td class="num">100%</td><td class="num">0.00</td><td class="verdict"><span class="pill good">Maximum efficiency</span></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size: 13px; color: var(--muted); margin-top: -8px;">
+    *Opp PPP at 3 crashers based on a single failed possession; insufficient data to analyze.
+  </p>
+
+  <h3>Player breakdown: contribution, efficiency, effort</h3>
+  <div class="chart-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="chart-card">
+      <div class="chart-label">Contribution</div>
+      <div class="chart-title">Defensive rebounds</div>
+      <div class="barlist">
+        <div class="row"><span class="who">#30</span><span class="bar"><span class="fill" style="width: 100%;"></span></span><span class="pct">6 · 32%</span></div>
+        <div class="row"><span class="who">#8</span><span class="bar"><span class="fill" style="width: 83%;"></span></span><span class="pct">5 · 26%</span></div>
+        <div class="row"><span class="who">#24</span><span class="bar"><span class="fill" style="width: 67%;"></span></span><span class="pct">4 · 21%</span></div>
+        <div class="row"><span class="who">Others</span><span class="bar"><span class="fill" style="width: 67%; background: #c9c2af;"></span></span><span class="pct">4 · 21%</span></div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">Efficiency</div>
+      <div class="chart-title">pDREB% when attempting</div>
+      <div class="barlist">
+        <div class="row"><span class="who">#30</span><span class="bar"><span class="fill" style="width: 71%;"></span></span><span class="pct">71%</span></div>
+        <div class="row"><span class="who">#8</span><span class="bar"><span class="fill" style="width: 100%;"></span></span><span class="pct">100%</span></div>
+        <div class="row"><span class="who">#24</span><span class="bar"><span class="fill" style="width: 83%;"></span></span><span class="pct">83%</span></div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">Effort gap</div>
+      <div class="chart-title">IP % (in paint, did not make effort to rebound)</div>
+      <div class="barlist">
+        <div class="row"><span class="who">#30</span><span class="bar"><span class="fill" style="width: 100%; background: #b8a675;"></span></span><span class="pct">4 · 19%</span></div>
+        <div class="row"><span class="who">#8</span><span class="bar"><span class="fill" style="width: 58%; background: #b8a675;"></span></span><span class="pct">1 · 11%</span></div>
+        <div class="row"><span class="who">#24</span><span class="bar"><span class="fill" style="width: 42%; background: #b8a675;"></span></span><span class="pct">1 · 8%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size: 14px; color: var(--muted); margin-top: 14px;">
+    <b>Sequencing issue:</b> after a successful DREB, GWU often failed to secure
+    the following offensive rebound, surrendering possession right back.
+    Worth considering for analysis.
+  </p>
+
+  <!-- ============= TURNOVERS ============= -->
+  <h2>Section 4</h2>
+  <div class="section-title">Comparing turnovers in half one versus half two</div>
+
+  <div class="insight">
+    <p>More turnovers were committed in half two than half one (<b>8 vs 7</b>), but opponent conversion fell from <b>1.375 → 0.125 pts/TO</b>. If Georgetown had continued successfully scoring off turnovers in the second half at the H1 rate, this would have meant roughly <b>10 more points</b> in the final-score difference*.</p>
+  </div>
+  <p style="font-size: 13px; color: var(--muted); margin-top: -8px;">
+    *8 H2 TOs × 1.375 ≈ 11 projected pts vs. the 1 actually scored.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Period</th>
+        <th class="num">TO</th>
+        <th class="num">Poss</th>
+        <th class="num">TO/Poss</th>
+        <th class="num">Pts/TO</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>H1</td><td class="num">7</td><td class="num">36</td><td class="num">0.19</td><td class="num">1.375</td></tr>
+      <tr><td>H2</td><td class="num">8</td><td class="num">36</td><td class="num">0.22</td><td class="num">0.125</td></tr>
+      <tr class="total"><td>Total</td><td class="num">15</td><td class="num">72</td><td class="num">0.21</td><td class="num">0.75</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Comparison to Temple Scrimmage</h3>
+  <p>In GW's scrimmage against Temple University, GW had 16 TO (almost identical), but Temple scored with <b>1.52 pts/TO</b> (almost double). Cost-per-turnover is not just dependent on how GW cares for the ball, but how our opponent uses their opportunities.</p>
+
+  <!-- ============= METHOD / CAVEATS ============= -->
+  <h2>Methodology &amp; Limitations</h2>
+  <div class="section-title">Building the Study</div>
+  <ul class="clean">
+    <li>Possession-by-possession tracking from game film.</li>
+    <li>Custom variables: <b>IP</b> (in-paint but not crashing), <b>p-OREB%</b> (per-player conversion rate on rebound attempts).</li>
+    <li>Single-game sample for 25-26, but the same framework was applied across the full 24-25 non-conference season for validation.</li>
+    <li>Opponent PPP is sensitive to opponent transition strength.</li>
+  </ul>
+
+  <div class="glossary">
+    <span><b>OREB% / DREB%</b>: rebounds won ÷ rebound opportunities</span>
+    <span><b>PPP</b>: points per possession (own team)</span>
+    <span><b>Opp. PPP</b>: points scored by opponent on the resulting possession</span>
+    <span><b>Crasher</b>: player who actively pursued the rebound</span>
+  </div>
+
+  <footer class="foot">
+    Bridget Muñoz · George Washington University Men's Basketball 
+  </footer>
+
+</div>
+
+<script>
+  // Color tokens pulled from CSS variables
+  const css = getComputedStyle(document.documentElement);
+  const accent = css.getPropertyValue('--accent').trim() || '#3a6b46';
+  const navy = css.getPropertyValue('--navy').trim() || '#1f2a3a';
+  const muted = css.getPropertyValue('--muted').trim() || '#5b6470';
+  const rule = css.getPropertyValue('--rule').trim() || '#e6e6e6';
+
+  const labels = ['0', '1', '2', '3', '4'];
+
+  const sharedOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          font: { family: "'IBM Plex Sans', ui-sans-serif, sans-serif", size: 11 },
+          color: muted,
+          boxWidth: 10,
+          boxHeight: 10,
+          padding: 12
+        }
+      },
+      tooltip: {
+        backgroundColor: navy,
+        titleFont: { size: 12 },
+        bodyFont: { size: 12 },
+        padding: 10,
+        callbacks: {
+          title: (items) => items[0].label + ' crashers'
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Crashers', color: muted, font: { size: 11 } },
+        grid: { display: false },
+        ticks: { color: muted, font: { size: 11 } }
+      },
+      y: {
+        beginAtZero: true,
+        grid: { color: rule, drawBorder: false },
+        ticks: { color: muted, font: { size: 11 } },
+        title: { display: true, text: 'PPP', color: muted, font: { size: 11 } }
+      }
+    }
+  };
+
+  // Chart 1: GW's own points per possession
+  new Chart(document.getElementById('chartOwnPPP'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '24-25 Non-Conf Avg',
+          data: [0, 1.71, 1.56, 1.60, 0],
+          backgroundColor: '#c9c2af',
+          borderRadius: 3
+        },
+        {
+          label: 'Georgetown game (25-26)',
+          data: [0, 1.25, 0.50, 1.25, 0],
+          backgroundColor: accent,
+          borderRadius: 3
+        }
+      ]
+    },
+    options: sharedOptions
+  });
+
+  // Chart 2: Opponent points per possession on the resulting possession
+  new Chart(document.getElementById('chartOppPPP'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '24-25 Non-Conf Avg',
+          data: [0.75, 0.88, 0.74, 0.83, 0],
+          backgroundColor: '#c9c2af',
+          borderRadius: 3
+        },
+        {
+          label: 'Georgetown game (25-26)',
+          data: [1.67, 0.33, 1.00, 0, 0],
+          backgroundColor: accent,
+          borderRadius: 3
+        }
+      ]
+    },
+    options: sharedOptions
+  });
+</script>
+
+</body>
+</html>
