@@ -506,7 +506,7 @@
   <div class="section-title">Defensive rebounding climbs with bodies</div>
 
   <div class="insight">
-    <p>Defensively, the data suggests that efficient rebounding occurs with at least 3 active engaged crashers. Sending two crashers only has a success rate of 63%, but is our second most frequent lineup at ~8/game. If we sent 3 crashers on those 8 2-crasher possessions, this would add an estimated 0.85 GW REB/Game. There was also ~1.8 OPP PPP on these failed 2 crasher possessions, and adding just one GW crasher on these plays would prevent ~3.25 opponent points/game.</p>
+    <p>Defensively, the data suggests that efficient rebounding occurs with at least 3 active engaged crashers. Sending two crashers only has a success rate of 63%, but is our second most frequent lineup at ~8/game. If we sent 3 crashers on those 8 2-crasher possessions, this would add an estimated 0.85 GW REB/Game. There was also ~1.8 OPP PPP on these failed 2 crasher possessions (see Section 4), and adding just one GW crasher on these plays would prevent ~3.25 opponent points/game.</p>
   </div>
 
   <table>
@@ -515,16 +515,15 @@
         <th>Crashers</th>
         <th class="num">FREQ</th>
         <th class="num">DREB%</th>
-        <th class="num">Opp PPP on fail</th>
         <th>Read</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>1</td><td class="num">11</td><td class="num">36%</td><td class="num">1.57</td><td class="verdict"><span class="pill bad">Maximum inefficiency</span></td></tr>
-      <tr><td>2</td><td class="num">41</td><td class="num">63%</td><td class="num">1.81</td><td class="verdict"><span class="pill warn">Diminishing</span></td></tr>
-      <tr><td>3</td><td class="num">61</td><td class="num">74%</td><td class="num">1.15</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
-      <tr><td>4</td><td class="num">28</td><td class="num">82%</td><td class="num">1.50</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
-      <tr><td>5</td><td class="num">5</td><td class="num">80%</td><td class="num">0.50</td><td class="verdict"><span class="pill mute">Small sample</span></td></tr>
+      <tr><td>1</td><td class="num">11</td><td class="num">36%</td><td class="verdict"><span class="pill bad">Maximum inefficiency</span></td></tr>
+      <tr><td>2</td><td class="num">41</td><td class="num">63%</td><td class="verdict"><span class="pill warn">Diminishing</span></td></tr>
+      <tr><td>3</td><td class="num">61</td><td class="num">74%</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
+      <tr><td>4</td><td class="num">28</td><td class="num">82%</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
+      <tr><td>5</td><td class="num">5</td><td class="num">80%</td><td class="verdict"><span class="pill mute">Small sample</span></td></tr>
     </tbody>
   </table>
   <p class="subnote">Overall defensive REB%: 69.4% (102 of 147).</p>
@@ -534,7 +533,7 @@
   <div class="section-title">Offensive rebounding by crasher count</div>
 
   <div class="insight">
-    <p>Offensively the story is pretty straightforward, where more rebounders implies higher payoff. 3 rebounders is the exception here, and after running the numbers it's unrelated to the number of IP players or free chasers. The only difference I found was in number of designated rebounders. GW sends ~1 designated rebounder per lineup, not increasing when going from 1-5 offensive crashers. This means the +1 crasher is going to be any player, not specifically a designated rebounder The three-crasher dip could be from a number of reasons, but definitely also worth noting and investigating transition ability further. Since I did not study this outright I can't definitively say this increased PPP is from transition, but from film assessment I can say it's the clearest hypothesis</p>
+    <p>Offensively the story is pretty straightforward, where more rebounders implies higher payoff. 3 rebounders is the exception here, and after running the numbers it's unrelated to the number of IP players or free chasers. The only difference I found was in number of designated rebounders. GW sends ~1 designated rebounder per lineup, not increasing when going from 1-5 offensive crashers. This means the +1 crasher is going to be any player, not specifically a designated rebounder. The three-crasher dip could be from a number of reasons, but definitely also worth noting and investigating transition ability further. Since I did not study this outright I can't definitively say the increased 3-crasher O-PPP (see Section 4) is from transition, but from film assessment I can say it's the clearest hypothesis</p>
   </div>
 
   <table>
@@ -543,16 +542,15 @@
         <th>Crashers</th>
         <th class="num">FREQ</th>
         <th class="num">OREB%</th>
-        <th class="num">Opp PPP on fail</th>
         <th>Read</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>0</td><td class="num">23</td><td class="num">4%</td><td class="num">0.95</td><td class="verdict"><span class="pill bad">Maximum inefficiency</span></td></tr>
-      <tr><td>1</td><td class="num">35</td><td class="num">40%</td><td class="num">1.05</td><td class="verdict"><span class="pill warn">Balanced</span></td></tr>
-      <tr><td>2</td><td class="num">33</td><td class="num">58%</td><td class="num">1.08</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
-      <tr><td>3</td><td class="num">22</td><td class="num">46%</td><td class="num">1.82</td><td class="verdict"><span class="pill warn">Diminishing</span></td></tr>
-      <tr><td>4</td><td class="num">11</td><td class="num">64%</td><td class="num">1.25</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
+      <tr><td>0</td><td class="num">23</td><td class="num">4%</td><td class="verdict"><span class="pill bad">Maximum inefficiency</span></td></tr>
+      <tr><td>1</td><td class="num">35</td><td class="num">40%</td><td class="verdict"><span class="pill warn">Balanced</span></td></tr>
+      <tr><td>2</td><td class="num">33</td><td class="num">58%</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
+      <tr><td>3</td><td class="num">22</td><td class="num">46%</td><td class="verdict"><span class="pill warn">Diminishing</span></td></tr>
+      <tr><td>4</td><td class="num">11</td><td class="num">64%</td><td class="verdict"><span class="pill good">Strong</span></td></tr>
     </tbody>
   </table>
   <p class="subnote">Overall offensive REB%: 41.1% (51 of 124).</p>
@@ -591,15 +589,16 @@
           <tr><th>Crashers</th><th class="num">Fails</th><th class="num">Opp pts</th></tr>
         </thead>
         <tbody>
-          <tr><td>0</td><td class="num">1</td><td class="num">2</td></tr>
+          <tr><td>0</td><td class="num">1</td><td class="num">2<sup>*</sup></td></tr>
           <tr><td>1</td><td class="num">7</td><td class="num">11</td></tr>
           <tr><td>2</td><td class="num">15</td><td class="num">27</td></tr>
           <tr><td>3</td><td class="num">16</td><td class="num">15</td></tr>
           <tr><td>4</td><td class="num">5</td><td class="num">6</td></tr>
-          <tr><td>5</td><td class="num">1</td><td class="num">0</td></tr>
+          <tr><td>5</td><td class="num">1</td><td class="num">0<sup>*</sup></td></tr>
           <tr class="total"><td>Total</td><td class="num">45</td><td class="num">61</td></tr>
         </tbody>
       </table>
+      <p class="subnote" style="margin-top: 12px;">* n=1, single possession. Treat as a count, not a rate.</p>
     </div>
   </div>
 
